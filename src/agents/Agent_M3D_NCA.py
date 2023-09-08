@@ -213,7 +213,7 @@ class Agent_M3D_NCA(Agent_Multi_NCA):
                     print("next_res: ", next_res.shape)
 
                     # Choose random patch of image for each element in batch
-                    nonzero_indices = np.where(inputs_loc != 0)
+                    nonzero_indices = torch.where(inputs_loc != 0)
                     min_x_masked, max_x_masked = np.min(nonzero_indices[0]), np.max(nonzero_indices[0])
                     min_y_masked, max_y_masked = np.min(nonzero_indices[1]), np.max(nonzero_indices[1])
                     min_z_masked, max_z_masked = np.min(nonzero_indices[2]), np.max(nonzero_indices[2])
