@@ -119,6 +119,7 @@ class Agent_NCA(BaseAgent):
             #Args
                 data (int, tensor, tensor): id, inputs, targets
         """
+        print("get_output agent nca")
         id, inputs, targets = data
         outputs = self.model(inputs, steps=self.getInferenceSteps(), fire_rate=self.exp.get_from_config('cell_fire_rate'))
         if self.exp.get_from_config('Persistence'):
