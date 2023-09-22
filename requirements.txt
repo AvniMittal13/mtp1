@@ -1,7 +1,0 @@
-torch
-opencv-python
-nibabel
-torchio
-seaborn
-aim
-Gitpython

@@ -13,7 +13,6 @@ class Agent_Multi_NCA(Agent_NCA):
             #Returns:
                 loss item
         """
-        print("batch step Agent multi nca")
         data = self.prepare_data(data)
         outputs, targets = self.get_outputs(data)
         for m in range(self.exp.get_from_config('train_model')+1):

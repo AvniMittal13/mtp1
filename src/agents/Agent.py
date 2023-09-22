@@ -60,7 +60,6 @@ class BaseAgent():
             #Args 
                 data (torch): The data to be passed to the model.
         """
-        print("get outputs agent")
         return self.model(data)
 
     def initialize_epoch(self):
@@ -81,7 +80,6 @@ class BaseAgent():
             #Returns:
                 loss item
         """
-        print("batch_step agent")
         data = self.prepare_data(data)
         outputs, targets = self.get_outputs(data)
         self.optimizer.zero_grad()
@@ -181,7 +179,6 @@ class BaseAgent():
             #Args
                 dataloader (Dataloader): contains training data
                 loss_f (nn.Model): The loss for training"""
-        print("train")
         for epoch in range(self.exp.currentStep, self.exp.get_max_steps()+1):
             print("Epoch: " + str(epoch))
             loss_log = {}
@@ -249,7 +246,7 @@ class BaseAgent():
         print("NQM Score: ", np.sum(stdd) / np.sum(median))
 
         # Save files refactor
-        if True:
+        if False:
             nib_save = np.expand_dims(img_mri[0, ..., 0], axis=-1) 
             nib_save = nib.Nifti1Image(nib_save , np.array(((1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 4, 0), (0, 0, 0, 1))), nib.Nifti1Header()) #np.array(((0, 0, 1, 0), (0, 1, 0, 0), (1, 0, 0, 0), (0, 0, 0, 1)))
             nib.save(nib_save, os.path.join("path", str(img_id) + "_image.nii.gz"))

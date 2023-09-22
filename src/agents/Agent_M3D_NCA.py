@@ -160,9 +160,6 @@ class Agent_M3D_NCA(Agent_Multi_NCA):
                         stp = self.getInferenceSteps()
                     outputs = self.model[m](inputs_loc, steps=stp, fire_rate=self.exp.get_from_config('cell_fire_rate'))
                 else:
-                    # GET BOUNDING BOX BEFORE UPSCALING
-
-                    
                     # Create higher res image for next level -> Replace with single downscaling step
                     next_res = full_res
                     for i in range(self.exp.get_from_config('train_model') - (m +1)):
@@ -203,37 +200,14 @@ class Agent_M3D_NCA(Agent_Multi_NCA):
                     factor = self.exp.get_from_config('train_model') - m -1
                     factor_pow = math.pow(2, factor)
 
-                    # ---------------START--------------
-                    # print("m: ", m)
-                    # print("inputs_loc: ", inputs_loc.shape)
-                    # print("targets_loc: ", targets_loc.shape)
-                    # print("full_res_new: ", full_res_new.shape)
-                    # print("full_res_gt_new: ", full_res_gt_new.shape)
-                    # print("outputs: ", outputs.shape)
-                    # print("next_res: ", next_res.shape)
-
                     # Choose random patch of image for each element in batch
-                    nonzero_indices = torch.where(inputs_loc_temp != 0)
-                    # print(nonzero_indices)
-                    # print(nonzero_indices.shape)
-                    min_x_masked, max_x_masked = torch.min(nonzero_indices[1]), torch.max(nonzero_indices[1])
-                    min_y_masked, max_y_masked = torch.min(nonzero_indices[2]), torch.max(nonzero_indices[2])
-                    min_z_masked, max_z_masked = torch.min(nonzero_indices[3]), torch.max(nonzero_indices[3])
-
-                    for b in range(inputs_loc.shape[0]):
+                    for b in range(inputs_loc.shape[0]): 
                         while True:
-                            # Randomized start position for patch within the masked bounding box
-                            pos_x = random.randint(min_x_masked, max_x_masked - size[0])
-                            pos_y = random.randint(min_y_masked, max_y_masked - size[1])
-                            pos_z = random.randint(min_z_masked, max_z_masked - size[2])
+                            pos_x = random.randint(0, inputs_loc_temp.shape[1] - size[0])
+                            pos_y = random.randint(0, inputs_loc_temp.shape[2] - size[1])
+                            pos_z = random.randint(0, inputs_loc_temp.shape[3] - size[2])
+                            break
 
-                            # Check if the patch is completely within the masked bounding box
-                            if (min_x_masked <= pos_x < max_x_masked - size[0] and
-                                min_y_masked <= pos_y < max_y_masked - size[1] and
-                                min_z_masked <= pos_z < max_z_masked - size[2]):
-                                break
-
-                            # -----------OVER-------------------
                         # Randomized start position for patch
                         pos_x_full = int(pos_x * factor_pow)
                         pos_y_full = int(pos_y * factor_pow)
