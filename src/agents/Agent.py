@@ -197,9 +197,9 @@ class BaseAgent():
             #if epoch % self.exp.get_from_config('ood_interval') == 0:
             #    print("Evaluate model in OOD cases")
             #    self.ood_evaluation(epoch=epoch)
-            # if epoch % self.exp.get_from_config('save_interval') == 0:
-            #     print("Model saved")
-            #     self.save_state(os.path.join(self.exp.get_from_config('model_path'), 'models', 'epoch_' + str(self.exp.currentStep)))
+            if epoch % self.exp.get_from_config('save_interval') == 0:
+                print("Model saved")
+                self.save_state(os.path.join(self.exp.get_from_config('model_path'), 'models', 'epoch_' + str(self.exp.currentStep)))
             self.conclude_epoch()
             self.exp.increase_epoch()
 
