@@ -191,15 +191,15 @@ class BaseAgent():
                 for key in loss_item.keys():
                     loss_log[key].append(loss_item[key])
             self.intermediate_results(epoch, loss_log)
-            if epoch % self.exp.get_from_config('evaluate_interval') == 0:
-                print("Evaluate model")
-                self.intermediate_evaluation(dataloader, epoch)
-            #if epoch % self.exp.get_from_config('ood_interval') == 0:
-            #    print("Evaluate model in OOD cases")
-            #    self.ood_evaluation(epoch=epoch)
-            if epoch % self.exp.get_from_config('save_interval') == 0:
-                print("Model saved")
-                self.save_state(os.path.join(self.exp.get_from_config('model_path'), 'models', 'epoch_' + str(self.exp.currentStep)))
+            # if epoch % self.exp.get_from_config('evaluate_interval') == 0:
+            #     print("Evaluate model")
+            #     self.intermediate_evaluation(dataloader, epoch)
+            # #if epoch % self.exp.get_from_config('ood_interval') == 0:
+            # #    print("Evaluate model in OOD cases")
+            # #    self.ood_evaluation(epoch=epoch)
+            # if epoch % self.exp.get_from_config('save_interval') == 0:
+            #     print("Model saved")
+            #     self.save_state(os.path.join(self.exp.get_from_config('model_path'), 'models', 'epoch_' + str(self.exp.currentStep)))
             self.conclude_epoch()
             self.exp.increase_epoch()
 
