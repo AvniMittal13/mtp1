@@ -98,19 +98,23 @@ class Experiment():
         # TODO: Proper reload
         print(os.path.join(self.config['model_path'], 'data_split.dt'))
 
-        self.data_split = load_pickle_file(os.path.join(self.config['model_path'], 'data_split.dt'))
-        self.projectConfig = load_json_file(os.path.join(self.config['model_path'], 'config.dt'))
+        # self.data_split = load_pickle_file(os.path.join(self.config['model_path'], 'data_split.dt'))
+        self.data_split = self.new_datasplit()
+        dump_pickle_file(self.data_split, os.path.join(self.config['model_path'], 'data_split.dt'))
+
+        # self.projectConfig = load_json_file(os.path.join(self.config['model_path'], 'config.dt'))
 
         # Find most recent Experiment with name and reload
         self.run = Run(run_hash=self.projectConfig[0]['hash'], experiment=self.config['name'], repo=os.path.join(pc.STUDY_PATH, 'Aim'))
 
         self.config = self.projectConfig[0]
-        model_path = os.path.join(self.config['model_path'], 'models', 'epoch_' + str(self.currentStep))
+        model_path = os.path.join(self.config['model_path'], 'models')
         print(model_path)
         if os.path.exists(model_path):
             print("Reload State " + str(self.currentStep))
             self.agent.load_state(model_path)
 
+    #TODO Avni 
     def load_weights(self):
         r"""load weights stored in a file to the model
             TODO: Add functionality to load any previous saved step

@@ -28,6 +28,8 @@ def segment_nii_files(input_directory, class_name, output_directory, device, mod
     exp.set_model_state('test')
     data_loader = torch.utils.data.DataLoader(dataset, shuffle=True, batch_size=exp.get_from_config('batch_size'))
 
+    agent.getAverageDiceScore()
+
     # load model weights
 
     # make predictions and save

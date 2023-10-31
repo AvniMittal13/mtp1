@@ -311,6 +311,7 @@ class BaseAgent():
 
 
                 # Run inference 10 times to create a pseudo ensemble
+                #TODO Avni -> Pseudoensemble option
                 if pseudo_ensemble: # 5 + 5 times
                     outputs2, _ = self.get_outputs(data, full_img=True, tag="1")
                     outputs3, _ = self.get_outputs(data, full_img=True, tag="2")
@@ -395,6 +396,7 @@ class BaseAgent():
                             #encode_image=False), self.exp.currentStep)
 
                             # REFACTOR: Save predictions
+                            # TODO Avni -> when save images option is true
                             if False:
                                 label_out = torch.sigmoid(patient_3d_image[0, ...])
                                 nib_save = nib.Nifti1Image(label_out  , np.array(((0, 0, 1, 0), (0, 1, 0, 0), (1, 0, 0, 0), (0, 0, 0, 1))), nib.Nifti1Header())
