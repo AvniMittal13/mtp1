@@ -110,6 +110,21 @@ class Experiment():
         if os.path.exists(model_path):
             print("Reload State " + str(self.currentStep))
             self.agent.load_state(model_path)
+
+    def load_weights(self):
+        r"""load weights stored in a file to the model
+            TODO: Add functionality to load any previous saved step
+        """
+
+        # Find most recent Experiment with name and reload
+        self.run = Run(run_hash=self.projectConfig[0]['hash'], experiment=self.config['name'], repo=os.path.join(pc.STUDY_PATH, 'Aim'))
+
+        self.config = self.projectConfig[0]
+        model_path = os.path.join(self.config['model_path'], 'models', 'epoch_' + str(self.currentStep))
+        print(model_path)
+        if os.path.exists(model_path):
+            print("Reload State " + str(self.currentStep))
+            self.agent.load_state(model_path)
     
     def set_size(self):
         if isinstance(self.config['input_size'][0], tuple):
