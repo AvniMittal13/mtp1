@@ -22,11 +22,17 @@ def segment_nii_files(input_directory, class_name, output_directory, device, mod
     # config  -> all configs have datasplit [0,0,1]
     config, ca = get_model_details(class_name, model_id, device)
 
+    config[0]['img_path'] = input_directory
+    config[0]['label_path'] = input_directory
+
+    print("img_path: ")= config[0]['img_path'] 
+    print("label_path: ")= config[0]['label_path'] 
+    print("len ca: ", len(ca))
     agent = Agent_M3D_NCA(ca)
     exp = Experiment(config, dataset, ca, agent)
     dataset.set_experiment(exp)
-    exp.set_model_state('test')
-    data_loader = torch.utils.data.DataLoader(dataset, shuffle=True, batch_size=exp.get_from_config('batch_size'))
+    # exp.set_model_state('test')
+    # data_loader = torch.utils.data.DataLoader(dataset, shuffle=True, batch_size=exp.get_from_config('batch_size'))
 
     agent.getAverageDiceScore()
 
@@ -55,9 +61,9 @@ def get_model_details(class_name, model_id, device):
     return config, ca
 
 
-def perform_segmentation(input_image, class_name, device):
+# def perform_segmentation(input_image, class_name, device):
 
 
-def save_nii_image(image, output_path):
-    # Save the NIfTI image to the specified path
-    nib.save(image, output_path)
+# def save_nii_image(image, output_path):
+#     # Save the NIfTI image to the specified path
+#     nib.save(image, output_path)

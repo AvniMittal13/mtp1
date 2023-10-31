@@ -6,8 +6,8 @@ from src.losses.LossFunctions import DiceFocalLoss
 from src.utils.Experiment import Experiment
 from src.agents.Agent_M3D_NCA import Agent_M3D_NCA
 config = [{
-    'img_path': r"/home/jkalkhof_locale/Documents/Data/Task04_Hippocampus/train/imagesTr/",
-    'label_path': r"/home/jkalkhof_locale/Documents/Data/Task04_Hippocampus/train/labelsTr/",
+    'img_path': r"/content/rsna_orig/final_dataset",
+    'label_path': r"/content/rsna_masks/",
     'name': r'M3D_NCA_Run4',
     'device':"cuda:0",
     'unlock_CPU': True,
@@ -18,19 +18,19 @@ config = [{
     # Training
     'save_interval': 10,
     'evaluate_interval': 10,
-    'n_epoch': 3000,
-    'batch_duplication': 1,
+    'n_epoch': 30,
+    'batch_duplication': 2,
     # Model
     'channel_n': 16,        # Number of CA state channels
     'inference_steps': [10, 10],
     'cell_fire_rate': 0.5,
-    'batch_size': 4,
+    'batch_size': 2,
     'input_channels': 1,
     'output_channels': 1,
     'hidden_size': 64,
     'train_model':1,
     # Data
-    'input_size': [(16, 16, 13),(64, 64, 52)], # 
+    'input_size': [(32,32,20),(128,128,80)], # 
     'scale_factor': 4,
     'data_split': [0.7, 0, 0.3], 
     'keep_original_scale': True,
