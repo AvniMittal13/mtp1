@@ -11,6 +11,9 @@ def segment_nii_files(input_directory, class_name, output_directory, device, mod
     # Set the output directory to default if not provided
     if output_directory is None:
         output_directory = os.path.join(input_directory, "segmentation_results")
+        
+    if not os.path.exists(output_directory):
+        os.makedirs(output_directory)
 
     # Create the output directory if it doesn't exist
     os.makedirs(output_directory, exist_ok=True)
@@ -25,6 +28,8 @@ def segment_nii_files(input_directory, class_name, output_directory, device, mod
     config[0]['img_path'] = input_directory
     config[0]['label_path'] = input_directory
     config[0]['input_size'] = [tuple(sublist) for sublist in config[0]['input_size']]
+    config[0]['output_path'] = output_directory
+    os.m
 
     print("img_path: ", config[0]['img_path'])
     print("label_path: ", config[0]['label_path'])     

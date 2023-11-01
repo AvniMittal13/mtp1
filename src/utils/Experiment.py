@@ -141,7 +141,7 @@ class Experiment():
         r"""General experiment configurations needed after setup or loading
         """
         # self.currentStep = self.current_step()
-        self.current_step = 0
+        self.currentStep = 0
         self.set_size()
         #self.writer = SummaryWriter(log_dir=os.path.join(self.get_from_config('model_path'), 'tensorboard', os.path.basename(self.get_from_config('model_path'))))
         # self.set_current_config()
