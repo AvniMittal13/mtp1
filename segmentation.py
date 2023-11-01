@@ -26,8 +26,8 @@ def segment_nii_files(input_directory, class_name, output_directory, device, mod
     config[0]['label_path'] = input_directory
     config[0]['input_size'] = [tuple(sublist) for sublist in config[0]['input_size']]
 
-    print("img_path: ")= config[0]['img_path'] 
-    print("label_path: ")= config[0]['label_path']     
+    print("img_path: ", config[0]['img_path'])
+    print("label_path: ", config[0]['label_path'])     
     print("len ca: ", len(ca))
     agent = Agent_M3D_NCA(ca)
     exp = Experiment(config, dataset, ca, agent)
