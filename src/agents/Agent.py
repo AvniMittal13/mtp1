@@ -550,10 +550,10 @@ class BaseAgent():
 
                             # REFACTOR: Save predictions
                             # TODO Avni -> when save images option is true
-                            if get_from_config('output_path') != None:
+                            if self.exp.get_from_config('output_path') != None:
                                 label_out = torch.sigmoid(patient_3d_image[0, ...])
                                 nib_save = nib.Nifti1Image(label_out  , np.array(((0, 0, 1, 0), (0, 1, 0, 0), (1, 0, 0, 0), (0, 0, 0, 1))), nib.Nifti1Header())
-                                nib.save(nib_save, os.path.join(get_from_config('output_path'), str(patient_id) + ".gz"))
+                                nib.save(nib_save, os.path.join(self.exp.get_from_config('output_path'), str(patient_id) + ".gz"))
 
                                 # nib_save = nib.Nifti1Image(torch.sigmoid(patient_3d_real_Img[0, ...])  , np.array(((0, 0, 1, 0), (0, 1, 0, 0), (1, 0, 0, 0), (0, 0, 0, 1))), nib.Nifti1Header())
                                 # nib.save(nib_save, os.path.join("path", str(len(loss_log[0])) + "_real.nii.gz"))
