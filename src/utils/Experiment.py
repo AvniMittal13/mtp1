@@ -111,7 +111,7 @@ class Experiment():
         model_path = os.path.join(self.config['model_path'], 'models')
         print(model_path)
         if os.path.exists(model_path):
-            print("Reload State " + str(self.currentStep))
+            print("Reload State ")
             self.agent.load_state(model_path)
 
     #TODO Avni 
@@ -144,7 +144,7 @@ class Experiment():
         self.current_step = 0
         self.set_size()
         #self.writer = SummaryWriter(log_dir=os.path.join(self.get_from_config('model_path'), 'tensorboard', os.path.basename(self.get_from_config('model_path'))))
-        self.set_current_config()
+        # self.set_current_config()
         self.agent.set_exp(self)
         #if self.currentStep == 0:
         #    self.write_text('config', str(self.projectConfig), 0)
