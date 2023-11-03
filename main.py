@@ -6,7 +6,7 @@ def main():
     parser = argparse.ArgumentParser(description="NIfTI (.nii) File Segmentation Tool")
     parser.add_argument("input_directory", help="Directory with .nii files")
     parser.add_argument("class_name", help="Class name for segmentation (e.g., spinal_cord)")
-    parser.add_argument("model_id", help="Model id for the class, format will be NCA_(NUM_NCA)_(underscore seperated input size)")
+    parser.add_argument("--model_id", help="Model id for the class, format will be NCA_(NUM_NCA)_(underscore seperated input size)")
     parser.add_argument("--output_directory", help="Output directory for saving segmentation masks")
     parser.add_argument("--device", choices=["cpu", "cuda"], default="cpu", help="Choose CPU or GPU")
     parser.add_argument("--preview", action="store_true", help="Generate a 3D rendering preview")
