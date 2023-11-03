@@ -16,9 +16,9 @@ def segment_nii_files(input_directory, class_name, output_directory, device, mod
         variance_maps_directory = os.path.join(output_directory, "variance_maps")
 
     if not os.path.exists(output_directory):
-        os.makedirs(output_directory)
+        os.makedirs(output_directory, exist_ok = "True")
     if pseudo_ensemble and variance_map:
-        os.makedirs(variance_maps_directory)
+        os.makedirs(variance_maps_directory, exist_ok = "True")
 
     # Create the output directory if it doesn't exist
     os.makedirs(output_directory, exist_ok=True)
@@ -43,8 +43,6 @@ def segment_nii_files(input_directory, class_name, output_directory, device, mod
     agent = Agent_M3D_NCA(ca)
     exp = Experiment(config, dataset, ca, agent)
     dataset.set_experiment(exp)
-    # exp.set_model_state('test')
-    # data_loader = torch.utils.data.DataLoader(dataset, shuffle=True, batch_size=exp.get_from_config('batch_size'))
     agent.predict(pseudo_ensemble = pseudo_ensemble)
     # agent.getAverageDiceScore()
 
