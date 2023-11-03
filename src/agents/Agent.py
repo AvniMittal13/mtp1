@@ -246,26 +246,26 @@ class BaseAgent():
         print("NQM Score: ", np.sum(stdd) / np.sum(median))
 
         # Save files refactor
-        if False:
-            nib_save = np.expand_dims(img_mri[0, ..., 0], axis=-1) 
-            nib_save = nib.Nifti1Image(nib_save , np.array(((1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 4, 0), (0, 0, 0, 1))), nib.Nifti1Header()) #np.array(((0, 0, 1, 0), (0, 1, 0, 0), (1, 0, 0, 0), (0, 0, 0, 1)))
-            nib.save(nib_save, os.path.join("path", str(img_id) + "_image.nii.gz"))
+        if self.exp.get_from_config('variance_maps_path') != None:
+            # nib_save = np.expand_dims(img_mri[0, ..., 0], axis=-1) 
+            # nib_save = nib.Nifti1Image(nib_save , np.array(((1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 4, 0), (0, 0, 0, 1))), nib.Nifti1Header()) #np.array(((0, 0, 1, 0), (0, 1, 0, 0), (1, 0, 0, 0), (0, 0, 0, 1)))
+            # nib.save(nib_save, os.path.join("path", str(img_id) + "_image.nii.gz"))
             
-            nib_save = np.expand_dims(targets[0, ..., 0], axis=-1) 
-            nib_save = nib.Nifti1Image(nib_save , np.array(((1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 4, 0), (0, 0, 0, 1))), nib.Nifti1Header()) #np.array(((0, 0, 1, 0), (0, 1, 0, 0), (1, 0, 0, 0), (0, 0, 0, 1)))
-            nib.save(nib_save, os.path.join("path", str(img_id) + "_gt.nii.gz"))
+            # nib_save = np.expand_dims(targets[0, ..., 0], axis=-1) 
+            # nib_save = nib.Nifti1Image(nib_save , np.array(((1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 4, 0), (0, 0, 0, 1))), nib.Nifti1Header()) #np.array(((0, 0, 1, 0), (0, 1, 0, 0), (1, 0, 0, 0), (0, 0, 0, 1)))
+            # nib.save(nib_save, os.path.join("path", str(img_id) + "_gt.nii.gz"))
 
             nib_save = np.expand_dims(stdd[0, ..., 0], axis=-1) 
             nib_save = nib.Nifti1Image(nib_save , np.array(((1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 4, 0), (0, 0, 0, 1))), nib.Nifti1Header()) #np.array(((0, 0, 1, 0), (0, 1, 0, 0), (1, 0, 0, 0), (0, 0, 0, 1)))
-            nib.save(nib_save, os.path.join("path", str(img_id) + "_variance.nii.gz"))
+            nib.save(nib_save, os.path.join(self.exp.get_from_config('variance_maps_path'), str(img_id) + "_variance.nii.gz"))
 
-            nib_save = np.expand_dims(mean[0, ..., 0], axis=-1) 
-            nib_save[nib_save > 0.5] = 1 
-            nib_save[nib_save != 1] = 0
-            nib_save = nib.Nifti1Image(nib_save , np.array(((1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 4, 0), (0, 0, 0, 1))), nib.Nifti1Header()) #np.array(((0, 0, 1, 0), (0, 1, 0, 0), (1, 0, 0, 0), (0, 0, 0, 1)))
-            nib.save(nib_save, os.path.join("path", str(img_id) + "_label.nii.gz"))
+            # nib_save = np.expand_dims(mean[0, ..., 0], axis=-1) 
+            # nib_save[nib_save > 0.5] = 1 
+            # nib_save[nib_save != 1] = 0
+            # nib_save = nib.Nifti1Image(nib_save , np.array(((1, 0, 0, 0), (0, 1, 0, 0), (0, 0, 4, 0), (0, 0, 0, 1))), nib.Nifti1Header()) #np.array(((0, 0, 1, 0), (0, 1, 0, 0), (1, 0, 0, 0), (0, 0, 0, 1)))
+            # nib.save(nib_save, os.path.join("path", str(img_id) + "_label.nii.gz"))
         
-            f = open(os.path.join("path", str(img_id) + "_score.txt"), "a")
+            f = open(os.path.join(self.exp.get_from_config('variance_maps_path'), str(img_id) + "_score.txt"), "a")
             f.write(str(np.sum(stdd) / np.sum(median)))
             f.close()
 
@@ -489,17 +489,6 @@ class BaseAgent():
                 if dataset.slice is not None:
                     # If next patient
                     if id != patient_id and patient_id != None:
-                        # out = patient_id + ", "
-                        # for m in range(patient_3d_image.shape[3]):
-                        #     if(1 in np.unique(patient_3d_label[...,m].detach().cpu().numpy())):
-                        #         # loss_log[m][patient_id] = 1 - loss_f(patient_3d_image[...,m], patient_3d_label[...,m], smooth = 0).item() #,, mask = patient_3d_label[...,4].bool()
-
-                        #         # if math.isnan(loss_log[m][patient_id]):
-                        #             # loss_log[m][patient_id] = 0
-                        #         # out = out + str(loss_log[m][patient_id]) + ", "
-                        #     else:
-                        #         out = out + " , "
-                        # print(out)
                         patient_id, patient_3d_image, patient_3d_label = id, None, None
                     # If first slice of volume
                     if patient_3d_image == None:
@@ -532,8 +521,6 @@ class BaseAgent():
 
                     print(patient_3d_image.shape,patient_3d_label.shape )
                     for m in range(patient_3d_image.shape[-1]):
-                        # loss_log[m][patient_id] = 1 - loss_f(patient_3d_image[...,m], patient_3d_label[...,m], smooth = 0).item()
-                        # print(",",loss_log[m][patient_id])
                         # Add image to tensorboard
                         if True: 
                             if len(patient_3d_label.shape) == 4:
@@ -542,44 +529,14 @@ class BaseAgent():
                             self.exp.write_img(str(tag) + str(patient_id) + "_" + str(len(patient_3d_image)),
                                             merge_img_label_gt(patient_3d_real_Img[:,:,:,middle_slice:middle_slice+1,0].numpy(), torch.sigmoid(patient_3d_image[:,:,:,middle_slice:middle_slice+1,m]).numpy(), patient_3d_label[:,:,:,middle_slice:middle_slice+1,m].numpy()), 
                                             self.exp.currentStep)
-                            #self.exp.write_img(str(tag) + str(patient_id) + "_" + str(len(patient_3d_image)), 
-                            #convert_image(self.prepare_image_for_display(patient_3d_real_Img[:,:,:,5:6,:].detach().cpu()).numpy(), 
-                            #self.prepare_image_for_display(patient_3d_image[:,:,:,5:6,:].detach().cpu()).numpy(), 
-                            #self.prepare_image_for_display(patient_3d_label[:,:,:,5:6,:].detach().cpu()).numpy(), 
-                            #encode_image=False), self.exp.currentStep)
 
                             # REFACTOR: Save predictions
-                            # TODO Avni -> when save images option is true
                             if self.exp.get_from_config('output_path') != None:
                                 label_out = torch.sigmoid(patient_3d_image[0, ...])
                                 nib_save = nib.Nifti1Image(label_out  , np.array(((0, 0, 1, 0), (0, 1, 0, 0), (1, 0, 0, 0), (0, 0, 0, 1))), nib.Nifti1Header())
                                 nib.save(nib_save, os.path.join(self.exp.get_from_config('output_path'), str(patient_id) + ".gz"))
 
-                                # nib_save = nib.Nifti1Image(torch.sigmoid(patient_3d_real_Img[0, ...])  , np.array(((0, 0, 1, 0), (0, 1, 0, 0), (1, 0, 0, 0), (0, 0, 0, 1))), nib.Nifti1Header())
-                                # nib.save(nib_save, os.path.join("path", str(len(loss_log[0])) + "_real.nii.gz"))
-
-                                # nib_save = nib.Nifti1Image(patient_3d_label[0, ...]  , np.array(((0, 0, 1, 0), (0, 1, 0, 0), (1, 0, 0, 0), (0, 0, 0, 1))), nib.Nifti1Header())
-                                # nib.save(nib_save, os.path.join("path", str(len(loss_log[0])) + "_ground.nii.gz"))
-
-            # If 2D
-            # if dataset.slice is not None:
-            #     out = patient_id + ", "
-            #     for m in range(patient_3d_image.shape[3]):
-            #         if(1 in np.unique(patient_3d_label[...,m].detach().cpu().numpy())):
-            #             loss_log[m][patient_id] = 1 - loss_f(patient_3d_image[...,m], patient_3d_label[...,m], smooth = 0).item() 
-            #             out = out + str(loss_log[m][patient_id]) + ", "
-            #         else:
-            #             out = out + " , "
-            #     print(out)
-            # Print dice score per label
-            # for key in loss_log.keys():
-            #     if len(loss_log[key]) > 0:
-            #         print("Average Dice Loss 3d: " + str(key) + ", " + str(sum(loss_log[key].values())/len(loss_log[key])))
-            #         print("Standard Deviation 3d: " + str(key) + ", " + str(standard_deviation(loss_log[key])))
-
-            # self.exp.set_model_state('train')
             print("predictions saved")
-            # return loss_log
 
 def standard_deviation(loss_log):
     r"""Calculate the standard deviation
