@@ -1,3 +1,3 @@
 model_mappings = {
-    "spinal_cord": "NCA_4_40_80_160_320",
+    "spinal_cord": "NCA_4_32_64_128_256",
 }
