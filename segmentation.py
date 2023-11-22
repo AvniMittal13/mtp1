@@ -53,7 +53,7 @@ def get_model_details(class_name, model_id, device):
     config = load_json_file(path)
     config[0]['data_split'] = [0, 0, 1]
     num_ncas = config[0]['train_model']+1
-    ca = [BasicNCA3D(config[0]['channel_n'], config[0]['cell_fire_rate'], device, hidden_size=config[0]['hidden_size'], kernel_size=i*4 + 3, input_channels=config[0]['input_channels']).to(device)
+    ca = [BasicNCA3D(config[0]['channel_n'], config[0]['cell_fire_rate'], device, hidden_size=config[0]['hidden_size'], kernel_size=(num_ncas-i)*4 -1, input_channels=config[0]['input_channels']).to(device)
           for i in range(num_ncas)]
     ca.reverse()
     return config, ca
