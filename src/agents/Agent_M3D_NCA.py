@@ -1,12 +1,13 @@
 import torch
 import numpy as np
 from src.agents.Agent_Multi_NCA import Agent_Multi_NCA
+from src.agents.Agent_MedSeg3D import Agent_MedSeg3D
 import os
 import random
 import math
 import nibabel as nib
 
-class Agent_M3D_NCA(Agent_Multi_NCA):
+class Agent_M3D_NCA(Agent_Multi_NCA, Agent_MedSeg3D):
     """M3D-NCA training agent that uses 3d patches across n-levels during training to optimize VRAM.
     """
     def initialize(self):
@@ -19,7 +20,7 @@ class Agent_M3D_NCA(Agent_Multi_NCA):
             #Args
                 data (int, tensor, tensor): id, inputs, targets
         """
-        id, inputs, targets = data
+        id, inputs, targets = data['id'], data['image'], data['label']
 
         if len(targets.shape) < 5:
             targets = torch.unsqueeze(targets, 4)
@@ -50,9 +51,6 @@ class Agent_M3D_NCA(Agent_Multi_NCA):
 
         input_channel = self.exp.get_from_config('input_channels')
         
-        min_x_masked, max_x_masked = 0, inputs_loc.shape[1]
-        min_y_masked, max_y_masked = 0, inputs_loc.shape[2]
-        min_z_masked, max_z_masked = 0, inputs_loc.shape[3]
 
         # After training run inference on full image
         if full_img == True:
@@ -99,9 +97,7 @@ class Agent_M3D_NCA(Agent_Multi_NCA):
                     # Scale m-1 times 
                     else:
                         up = torch.nn.Upsample(scale_factor=scale_fac, mode='nearest')
-                        min_x_masked, max_x_masked = min_x_masked*scale_fac, max_x_masked*scale_fac
-                        min_y_masked, max_y_masked = min_y_masked*scale_fac, max_y_masked*scale_fac
-                        min_z_masked, max_z_masked = min_z_masked*scale_fac, max_z_masked*scale_fac
+
                         # REFACTOR: Visualisation
                         if save4d:
                             outputs = inputs_loc
@@ -118,6 +114,7 @@ class Agent_M3D_NCA(Agent_Multi_NCA):
                                 step = step +1 
                         else:
                             outputs = self.model[m](inputs_loc, steps=self.getInferenceSteps()[m], fire_rate=self.exp.get_from_config('cell_fire_rate'))
+                        
 
                         # Upscale lowres features to next level
                         outputs = torch.permute(outputs, (0, 4, 1, 2, 3))
@@ -132,20 +129,8 @@ class Agent_M3D_NCA(Agent_Multi_NCA):
                             next_res = max_pool(next_res)
                             next_res = next_res.transpose(1,4)
 
-                        next_res = next_res[:, min_x_masked:max_x_masked, min_y_masked:max_y_masked, min_z_masked:max_z_masked,:]
                         # Concat lowres features with higher res image
                         inputs_loc = torch.concat((next_res[...,:input_channel], outputs[...,input_channel:]), 4)
-                        
-                        outputs = torch.sigmoid(outputs[..., self.input_channels:self.input_channels+self.output_channels][:,...])
-                        # print(outputs.shape)
-
-                        # TODO Avni
-                        min_x_masked, max_x_masked = torch.min(torch.where(outputs >=0.5 )[1]), torch.max(torch.where(outputs >=0.5 )[1])+1
-                        min_y_masked, max_y_masked = torch.min(torch.where(outputs >=0.5 )[2]), torch.max(torch.where(outputs >=0.5 )[2])+1
-                        min_z_masked, max_z_masked = torch.min(torch.where(outputs >=0.5 )[3]), torch.max(torch.where(outputs >=0.5 )[3])+1
-                        
-                        inputs_loc = inputs_loc[:, min_x_masked:max_x_masked, min_y_masked:max_y_masked, min_z_masked:max_z_masked,:]
-
                         targets_loc = targets
             
             # REFACTOR: Visualisation
