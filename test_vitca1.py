@@ -2,7 +2,7 @@
 import torch
 from src.datasets.Nii_Gz_Dataset_3D import Dataset_NiiGz_3D
 from src.models.Model_BasicNCA3D import BasicNCA3D
-from src.models.Model_ViTCA3D import BasicViTNCA3D
+from src.models.Model_BasicViTNCA3D import BasicViTNCA3D
 from src.losses.LossFunctions import DiceFocalLoss
 from src.utils.Experiment import Experiment
 from src.agents.Agent_M3D_NCA import Agent_M3D_NCA
